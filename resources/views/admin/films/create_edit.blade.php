@@ -56,7 +56,7 @@
                 <select class="form-select" name="actors[]" multiple aria-label="multiple select example">
                     <option>Select actors</option>
                     @foreach($actors as $actor)
-                        <option value="{{$actor->id}}" {{ !empty($film) && in_array($actor->id, $film->actor_ids ?? []) ? 'selected' : '' }}>{{ $actor->fullName }}</option>
+                        <option value="{{$actor->id}}" {{ !empty($film) && in_array($actor->id, $film->actors->pluck('_id')->toArray()) ? 'selected' : '' }}>{{ $actor->fullName }}</option>
                     @endforeach
                 </select>
                 @if ($errors->has('actors'))<span class="text-danger">{{ $errors->first('actors') }}</span>@endif

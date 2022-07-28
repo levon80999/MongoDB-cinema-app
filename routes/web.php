@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'main'])->name('home');
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('film/{id}', [HomeController::class, 'filmView'])->name('film.view');
 Route::get('producer/{id}', [HomeController::class, 'producerView'])->name('producer.single');
 Route::get('actor/{id}', [HomeController::class, 'actorView'])->name('actor.single');

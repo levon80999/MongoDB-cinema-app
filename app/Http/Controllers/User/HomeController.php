@@ -18,10 +18,9 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * @param Request $request
      * @return Application|Factory|View
      */
-    public function main(Request $request)
+    public function main() : View
     {
         $bestFilms = Film::where('best', true)->orderByDesc('created_at')->limit(4)->get();
         $comingSoon = Film::where('comingSoon', true)->orderByDesc('created_at')->limit(4)->get();
@@ -31,6 +30,24 @@ class HomeController extends Controller
             'bestFilms' => $bestFilms,
             'comingSoon' => $comingSoon,
             'recentFilms' => $recentFilms,
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $films = Film::when($request->input('film_name'), function ($q) use ($request) {
+            $q->where('name', 'regexp', '/'.$request->input('film_name').'/');
+        })->when($request->input('actor_name'), function ($q) use ($request) {
+            $q->where('actors.fullName', 'regexp', '/'.$request->input('actor_name').'/');
+        })->when($request->input('producer_name'), function ($q) use ($request) {
+            $q->where();
+        })->when($request->input('year'), function ($q) use ($request) {
+            $q->where('date', 'regex', $request->input('year'));
+        })->orderByDesc('created_at')
+            ->get();
+
+        return view('user.pages.search', [
+            'films' => $films
         ]);
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\BelongsToMany;
+use Jenssegers\Mongodb\Relations\EmbedsMany;
 use Jenssegers\Mongodb\Relations\HasMany;
 
 /**
@@ -41,11 +42,11 @@ class Film extends Model
     /**
      * Make relationship between films and actors
      *
-     * @return BelongsToMany
+     * @return EmbedsMany
      */
-    public function actors(): BelongsToMany
+    public function actors(): EmbedsMany
     {
-        return $this->belongsToMany(Actor::class);
+        return $this->embedsMany(Actor::class);
     }
 
     /**

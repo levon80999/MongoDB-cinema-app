@@ -6,15 +6,35 @@
         <p>Be aware about new films in {{ date('Y') }}</p>
     </div>
 
-    <form action="">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Title or description...">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Search</button>
+    <form action="{{ route('search') }}">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" name="film_name" placeholder="Film name">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="actor_name" placeholder="Last name">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="producer_name" placeholder="Last name">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <select class="form-control" name="year">
+                    @php ($currentYear = date('Y'))
+                    <option value="">Select Year</option>
+                    @for ($i = 1970; $i <= $currentYear; $i++)
+                        <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+
+            <div class="col">
+                <button type="submit" class="btn btn-success">Search</button>
             </div>
         </div>
     </form>
-    <div class="row" style="display: flex; justify-content: space-between;">
+    <div class="row" style="display: flex; justify-content: flex-start; gap: 24px;">
         @if(!$bestFilms->isEmpty())
             <h2>Best of {{ date('Y') }}</h2>
             <hr>
@@ -32,7 +52,7 @@
         @endif
     </div>
     <br>
-    <div class="row" style="display: flex; justify-content: space-between;">
+    <div class="row" style="display: flex; justify-content: flex-start; gap: 24px;">
         @if(!$recentFilms->isEmpty())
             <h2>Recent movies</h2>
             <hr>
@@ -50,7 +70,7 @@
         @endif
     </div>
     <br>
-    <div class="row" style="display: flex; justify-content: space-between;">
+    <div class="row" style="display: flex; justify-content: flex-start; gap: 24px;">
         @if(!$comingSoon->isEmpty())
             <h2>Coming Soon</h2>
             <hr>

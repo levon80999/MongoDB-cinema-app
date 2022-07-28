@@ -44,6 +44,10 @@ class ActorController extends Controller
         return view('admin.actors.create_edit');
     }
 
+    /**
+     * @param StoreActorRequest $request
+     * @return RedirectResponse
+     */
     public function store(StoreActorRequest $request) : RedirectResponse
     {
         $actor = new Actor();

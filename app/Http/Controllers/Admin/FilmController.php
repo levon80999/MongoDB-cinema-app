@@ -69,7 +69,12 @@ class FilmController extends Controller
         $film->comingSoon = (bool)$request->input('comingSoon');
         $film->best = (bool)$request->input('best');
 
-        $film->actors()->sync($request->input('actors'));
+        $actors = Actor::select('_id', 'name')->whereIn('_id', $request->input('actors'))->get();
+
+        foreach ($actors as $actor) {
+            $film->actors()->associate($actor);
+        }
+//        $film->actors()->sync($request->input('actors'));
 
         $producer = Producer::find($request->input('producer_id'));
         $film->producer()->associate($producer);
@@ -124,7 +129,12 @@ class FilmController extends Controller
         $film->comingSoon = (bool)Arr::get($data, 'comingSoon', $film->comingSoon);
         $film->best = (bool)Arr::get($data, 'best', $film->best);
 
-        $film->actors()->sync(Arr::get($data, 'actors', $film->actor_ids));
+        $actors = Actor::select('_id', 'fullName')->whereIn('_id', Arr::get($data, 'actors', $film->actor_ids))->get();
+
+        foreach ($actors as $actor) {
+            $film->actors()->associate($actor);
+        }
+//        $film->actors()->sync(Arr::get($data, 'actors', $film->actor_ids));
 
         $producer = Producer::find(Arr::get($data, 'producer_id', $film->producer_id));
         $film->producer()->associate($producer);
